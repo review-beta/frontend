@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'FuturaMDBold';
+  src: url('/fonts/futuramdbt_bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'News Cycle';
+  src: url('/fonts/NewsCycle-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.font-futura {
+  font-family: "FuturaMDBold";
+}
+
+.font-newscycle {
+  font-family: "News Cycle";
+}
+
+.font-work {
+  font-family: 'Work Sans';
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.right-nav input {
+
+  display: flex;
+
+  @media (max-width: 1224px) {
+    width: 160px;
+  }
+  @media (max-width: 988px) {
+    width: 100%;
+  }
+}
+
+.right-nav {
+
+  @media (max-width: 988px) {
+    width: 100%;
+  }
+}
+nav.navbar {
+  justify-content: space-between;
+
+  @media (max-width: 988px) {
+    flex-direction: column;
+    gap: 8px;
+  }
+  @media (max-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.nav-links ul {
+
+  @media (max-width: 1064px) {
+    gap: 4px;
+  }
+  @media (max-width: 988px) {
+    width: 100%;
+    justify-content: center;
+    gap: 16px;
+  }
+
+}
+.nav-links {
+
+  @media (max-width: 988px) {
+    order: 2;
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+header {
+
+  @media (max-width: 988px) {
+    position: static;
+  }
+}
+
+.inline-wrap {
+  display: inline;
+  white-space: normal;
+}
