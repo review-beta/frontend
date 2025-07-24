@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const cities = [
   "Lagos",
@@ -37,14 +37,27 @@ const cities = [
 export default function CustomDropdown() {
   const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleSelect = (city: string) => {
     setSelected(city);
     setOpen(false);
   };
 
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
         className="inline-flex rounded-md mb-1.5 text-left focus:outline-none justify-between items-center cursor-pointer"
@@ -64,13 +77,13 @@ export default function CustomDropdown() {
       </button>
 
       {open && (
-        <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto text-left">
+        <ul className="absolute z-10 w-full min-w-[160px] mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto text-left">
           {cities.map((city, index) => (
             <li
               key={index}
               onClick={() => handleSelect(city)}
-              className={`text-[16px] px-4 py-2 cursor-pointer hover:bg-indigo-100 ${
-                selected === city ? "bg-indigo-50 font-medium" : ""
+              className={`text-[16px] px-4 py-2 cursor-pointer hover:bg-[#eeeaff] ${
+                selected === city ? "bg-[#eeeaff] font-medium" : ""
               }`}
             >
               {city}
