@@ -65,19 +65,6 @@ const MovieForm = () => {
     }));
     };
 
-const handleMultiSelect = (name: string, value: number) => {
-    const current = formData[name as keyof typeof formData] as number[];
-
-    const updated = current.includes(value)
-        ? current.filter((v: number) => v !== value)
-        : [...current, value];
-
-    setFormData(prev => ({
-        ...prev,
-        [name]: updated,
-    }));
-    };
-
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
