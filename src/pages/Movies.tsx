@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import Navbar from '../components/Header';
 import CustomDropdown from '../components/CustomDropdown';
 import AdBanner from '../components/AdBanner';
 import Footer from '../components/Footer';
+import axios from 'axios'
+
+interface Movie {
+  id: number;
+  title: string;
+  description: string;
+  poster_url: string; // this will be the full image URL (e.g. http://localhost:8000/media/posters/...)
+  // add other fields if needed
+}
 
 const Home: React.FC = () => {
-    const images = [
-    "/images/cgdaylzgkzz6vaqbppk1.png",
-    "/images/euj7ndbteblq3exvk6b2.jpg",
-    "/images/hqkfkbebwk643tpgka6w.jpg",
-    "/images/xch3jywsmlegqwn4ngif.jpg",
-    "/images/cgdaylzgkzz6vaqbppk1.png",
-    "/images/hqkfkbebwk643tpgka6w.jpg",
-    ];
+  const [movies, setMovies] = useState<Movie[]>([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/movies/') // replace with your correct base API
+      .then(res => setMovies(res.data))
+      .catch(err => {
+        console.error('Failed to fetch movies:', err);
+      });
+  }, []);
 
   return (
     <div className="min-h-screen text-black bg-gradient-to-b from-[#eeeaff] to-[#ffffff]">
@@ -41,22 +51,22 @@ const Home: React.FC = () => {
 
         <div className="overflow-x-auto scroll-smooth scroll-snap-x scrollbar-hide">
             <div className="flex gap-4 w-max snap-x snap-mandatory">
-            {images.map((src, i) => (
+              {movies.map((movie) => (
                 <div
-                key={i}
-                className="min-w-[250px] bg-white border border-gray-200 rounded-[16px] overflow-hidden cursor-pointer"
+                  key={movie.id}
+                  className="min-w-[250px] bg-white border border-gray-200 rounded-[16px] overflow-hidden cursor-pointer"
                 >
-                <img
-                    src={src}
-                    alt={`Experience ${i + 1}`}
-                    className="w-[296px] object-contain bg-white"
-                />
-                <div className="p-4">
-                    <h4 className="text-lg font-medium mb-1">Exclusive Party {i + 1}</h4>
-                    <p className="text-sm text-zinc-400">Top venue • Music • Drinks</p>
+                  <img
+                    src={movie.poster_url}
+                    alt={movie.title}
+                    className="w-[296px] h-[180px] object-cover bg-white"
+                  />
+                  <div className="p-4">
+                    <h4 className="text-lg font-medium mb-1">{movie.title}</h4>
+                    <p className="text-sm text-zinc-400">{movie.description}</p>
+                  </div>
                 </div>
-                </div>
-            ))}
+              ))}
             </div>
         </div>
         </section>

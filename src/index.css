@@ -44,21 +44,21 @@
   @media (max-width: 1224px) {
     width: 160px;
   }
-  @media (max-width: 988px) {
+  @media (max-width: 1024px) {
     width: 100%;
   }
 }
 
 .right-nav {
 
-  @media (max-width: 988px) {
+  @media (max-width: 1025px) {
     width: 100%;
   }
 }
 nav.navbar {
   justify-content: space-between;
 
-  @media (max-width: 988px) {
+  @media (max-width: 1024px) {
     flex-direction: column;
     gap: 8px;
   }
@@ -72,7 +72,7 @@ nav.navbar {
   @media (max-width: 1064px) {
     gap: 4px;
   }
-  @media (max-width: 988px) {
+  @media (max-width: 1025px) {
     width: 100%;
     justify-content: center;
     gap: 16px;
@@ -81,19 +81,19 @@ nav.navbar {
 }
 .nav-links {
 
-  @media (max-width: 988px) {
+  @media (max-width: 1025px) {
     order: 2;
     width: 100%;
     justify-content: space-between;
   }
 }
 
-header {
+/* header {
 
   @media (max-width: 988px) {
     position: static;
   }
-}
+} */
 
 .inline-wrap {
   display: inline;
