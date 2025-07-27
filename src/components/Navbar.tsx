@@ -6,7 +6,7 @@ const navItems = [
   { label: "Movies", path: "/movies" },
   { label: "Dining", path: "/dining" },
   { label: "Events", path: "/events" },
-  { label: "Activities", path: "/activities" },
+  { label: "Hangouts", path: "/hangouts" },
 ];
 
 export default function Navbar() {

@@ -25,7 +25,7 @@ const Home: React.FC = () => {
       <section className="px-6 md:px-12 py-6 md:py-10 text-center">
         <h2 className="font-futura text-2xl md:text-4xl font-bold mb-2 text-center">
             <span className="inline-wrap">
-                Discover the best activities in{' '}
+                Discover the best hangout spots in{' '}
             <span className="inline-block align-middle">
             <CustomDropdown />
             </span>
