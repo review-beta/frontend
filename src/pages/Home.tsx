@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import { useState, useEffect} from 'react';
 import Navbar from '../components/Header';
 import CustomDropdown from '../components/CustomDropdown';
 import AdBanner from '../components/AdBanner';
