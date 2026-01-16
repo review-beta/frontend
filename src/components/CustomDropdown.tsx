@@ -62,7 +62,7 @@ export default function CustomDropdown() {
         onClick={() => setOpen(!open)}
         className="inline-flex rounded-md mb-1.5 text-left focus:outline-none justify-between items-center cursor-pointer"
       >
-        <span className="font-futura text-[#5A3EFF] whitespace-nowrap">{selected || "Your City"}</span>
+        <span className="font-futura text-[#5A3EFF] whitespace-nowrap">{selected || "Your State"}</span>
         <svg
           className={`w-4 h-4 ml-2 transform transition-transform duration-200 text-[#5A3EFF] ${
             open ? "rotate-180" : "rotate-0"

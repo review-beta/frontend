@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../assets/reviewbeta-logo.svg";
-import { FaLocationDot } from "react-icons/fa6";
+// import { FaLocationDot } from "react-icons/fa6";
 import Navbar from "./Navbar";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
@@ -35,27 +35,27 @@ const Header: React.FC = () => {
             <img src={Logo} alt="Reviewbeta Logo" className="w-[120px]" />
           </NavLink>
 
-          <div className="w-px h-6 bg-gray-300 sm:block" />
+          <div className="w-px h-6 bg-[#E4E4E4] sm:block" />
 
-          <div className="gap-1 pr-4 py-2 items-center sm:flex flex">
+          {/* <div className="gap-1 pr-4 py-2 items-center sm:flex flex">
             <FaLocationDot className="text-2xl text-gray-600 cursor-pointer hover:text-red-500 h-5" />
             <span className="text-gray-700 font-medium">Nigeria</span>
+          </div> */}
+
+          {/* Right side: Hamburger icon for mobile */}
+          <div className="flex items-center md:hidden">
+            <button
+              onClick={() => setIsSideNavOpen(true)}
+              className="text-2xl text-gray-700"
+            >
+              <CgMenuRight />
+            </button>
           </div>
-        </div>
 
-        {/* Right side: Hamburger icon for mobile */}
-        <div className="flex items-center md:hidden">
-          <button
-            onClick={() => setIsSideNavOpen(true)}
-            className="text-2xl text-gray-700"
-          >
-            <CgMenuRight />
-          </button>
-        </div>
-
-        {/* Desktop-only section: navbar + search + login */}
-        <div className="nav-links hidden md:flex items-center gap-4">
-          <Navbar />
+          {/* Desktop-only section: navbar + search + login */}
+          <div className="nav-links hidden md:flex items-center gap-4">
+            <Navbar />
+          </div>
         </div>
 
         <div className="right-nav hidden md:flex items-center gap-4">
