@@ -9,6 +9,7 @@ export default {
         futura: ['FuturaMDBold', 'sans-serif'],
         newscycle: ['News Cycle', 'sans-serif'],
         work: ['"Work Sans"', 'sans-serif'],
+        roboto: ['"Roboto Condensed"', 'sans-serif'],
       },
     },
   },

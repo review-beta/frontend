@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import CustomDropdown from "../components/CustomDropdown";
-// import AdBanner from "../components/AdBanner";
+import AdBanner from "../components/AdBanner";
 import Footer from "../components/Footer";
 import API from "../utils/api";
 import RatingDisplay from "../components/RatingDisplay";
@@ -11,11 +11,12 @@ import MovieListSkeleton from "../components/skeletons/MovieListSkeleton";
 import PrimaryButton from "../components/PrimaryButton";
 // import Hero from "../components/Hero";
 import HeroBanner from "../components/HeroBanner";
+import type { TopRatedKey } from "../config/topRatedTabs";
 import MobileAppCTA from "../components/MobileAppCTA";
 import TopReviewers from "../components/TopReviewers";
 import TopRatedHorizontalSection from "../components/TopRatedHorizontalSection";
 import FeaturedSpotlightSection from "../components/FeaturedSpotlightSection";
-import type { Movie, Dining, Event, Business, Hangout, } from "../constants/types";
+import type { Movie, Dining, Event, Business, Hangout, State, City } from "../types/index";
 
 
 const topRatedTabs: (Tab & {
@@ -74,7 +75,46 @@ const Home = () => {
   const [hangouts, setHangouts] = useState<Hangout[]>([]);
   const [movieTabs, setMovieTabs] = useState<Tab[]>([]);
   const [activeMovieTab, setActiveMovieTab] = useState<string | number>("top");
+  const [activeTab, setActiveTab] = useState<TopRatedKey | "all">("all");
   const [loading, setLoading] = useState(false);
+  const [cities, setCities] = useState<Record<number, City>>({});
+  const [states, setStates] = useState<Record<number, string>>({});
+
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const res = await API.get("/states/");
+        const map: Record<number, string> = {};
+        (res.data || []).forEach((state: State) => {
+          map[state.id] = state.name;
+        });
+        setStates(map);
+      } catch (err) {
+        console.error("Failed to fetch states", err);
+      }
+    };
+
+    fetchStates();
+  }, []);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const res = await API.get("/cities/");
+        const map: Record<number, City> = {};
+        (res.data || []).forEach((city: City) => {
+          map[city.id] = city;
+        });
+        setCities(map);
+      } catch (err) {
+        console.error("Failed to fetch cities", err);
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  const activeTabMeta = topRatedTabs.find(tab => String(tab.id) === activeTab);
 
   // useEffect(() => {
   //   const fetchMovies = async () => {
@@ -181,6 +221,8 @@ const Home = () => {
           }
         }
 
+        // const res = await API.get(url);
+
         const [res] = await Promise.all([
           API.get(url),
           delay(3000) // ensure skeleton shows at least 3 seconds
@@ -204,6 +246,52 @@ const Home = () => {
     setActiveMovieTab(tab.id);
   };
 
+  const getItemKey = (item: any) => {
+    if ("cuisine_type" in item) return `dining-${item.id}`;
+    if ("category" in item) return `event-${item.id}`;
+    if ("business_type" in item) return `business-${item.id}`;
+    if ("type" in item) return `hangout-${item.id}`;
+    return `item-${item.id}`;
+  };
+
+  const dataMap: Record<TopRatedKey, (Dining | Event | Business | Hangout)[]> = {
+    dining,
+    events,
+    businesses,
+    hangouts,
+  };
+
+  const itemsToRender =
+    activeTab === "all"
+      ? [...dining, ...events, ...businesses, ...hangouts]
+      : dataMap[activeTab] || [];
+
+  // Sort by average_rating descending
+  const sortedItems = [...itemsToRender].sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
+
+  // Pick most rated item
+  const featuredItem = sortedItems[0];
+
+  // Remaining 9 items for horizontal scroll
+  const horizontalItems = sortedItems.slice(1, 10);
+
+  const formatLocation = (item: any) => {
+    // Case 1: already a string (events)
+    if (typeof item.city === "string") {
+      return item.city;
+    }
+
+    // Case 2: city is an ID
+    if (typeof item.city === "number") {
+      const city = cities[item.city];
+      if (!city) return "-";
+
+      const stateName = states[city.state];
+      return `${city.name}${stateName ? `, ${stateName}` : ""}`;
+    }
+
+    return "-";
+  };
 
   return (
     <div className="min-h-screen text-black bg-[#ffffff]">
@@ -302,15 +390,133 @@ const Home = () => {
 
         </section>
 
+        <section className="flex flex-col py-2 md:py-4 gap-4">
+          <Tabs tabs={topRatedTabs} activeTabId={activeTab} onTabChange={(tab) => setActiveTab(String(tab.id) as TopRatedKey | "all")} />
+
+          <div className="flex flex-col md:flex-row items-start lg:items-center justify-between gap-2 px-4 md:px-6 w-full max-w-[1280px] md:mx-auto">
+            <div className="gap-1">
+              <h3 className="font-futura text-[18px] md:text-[24px] text-[#101828]">
+                {activeTabMeta?.heading}
+              </h3>
+              <p className="font-work text-sm text-[#667085]">
+                {activeTabMeta?.subText}
+              </p>
+            </div>
+            {activeTab !== "all" && activeTabMeta?.buttonText && activeTabMeta?.buttonLink && (
+              <div className="hidden md:flex">
+                <PrimaryButton
+                  text={activeTabMeta.buttonText}
+                  link={activeTabMeta.buttonLink}
+                />
+              </div>
+            )}
+          </div>
+          
+            {featuredItem && (
+              <div className="w-full max-w-[1280px] px-4 md:px-6 mx-auto mb-6">
+                <div className="flex flex-col md:flex-row gap-4 bg-white border border-gray-200 md:border-none rounded-[8px] overflow-hidden pb-4">
+                  <img
+                    src={featuredItem.banner_image}
+                    alt={featuredItem.name || featuredItem.title}
+                    className="w-full md:w-[600px] h-[160px] md:h-auto border border-white md:border-gray-200 p-1 object-cover rounded-[8px]"
+                  />
+                  <div className="flex flex-col justify-start px-4 md:p-4 gap-4">
+                    <div className="flex flex-col gap-1">
+                      <h4 className="font-futura text-[18px] md:text-[28px] font-semibold">
+                        {featuredItem.name || featuredItem.title}
+                      </h4>
+                      <p className="font-work text-[14px] md:text-[16px] text-[#606972] uppercase truncate block">
+                        {featuredItem.business_type || featuredItem.type || featuredItem.category || featuredItem.cuisine_type || "-"}
+                      </p>
+                    </div>
+                    <p className="font-work text-[#606972] text-[16px] md:text-[16px] max-w-xl line-clamp-3 md:line-clamp-4">
+                      {featuredItem.description || "-"}
+                    </p>
+                    {featuredItem.random_review && (
+                      <div className="border-l-4 border-blue-300 pl-4 max-w-xl">
+                        <p className="italic text-[#475569] line-clamp-4 md:line-clamp-7">
+                          “{featuredItem.random_review.comment}”
+                        </p>
+
+                        {(featuredItem.random_review.author ||
+                          featuredItem.random_review.rating) && (
+                          <div className="mt-1 flex items-center gap-2 text-sm text-[#64748B]">
+                            {featuredItem.random_review.author && (
+                              <span>— {featuredItem.random_review.author}</span>
+                            )}
+
+                            {featuredItem.random_review.rating !== undefined && (
+                              <span>⭐ {featuredItem.random_review.rating}</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    <RatingDisplay
+                      rating={featuredItem.average_rating}
+                      reviewCount={featuredItem.review_count}
+                    />
+                      <p className="text-[14px] md:text-[16px] font-work text-[#64748B] uppercase">
+                        {formatLocation(featuredItem)}
+                      </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          <div className="overflow-x-auto scroll-smooth scroll-snap-x scrollbar-hide">
+            <div className="w-full max-w-[1280px] px-4 md:px-6 mx-auto flex justify-start gap-2 md:gap-4 snap-x snap-mandatory">
+              {horizontalItems.map((item) => (
+                <div
+                  key={getItemKey(item)}
+                  className="min-w-[220px] lg:min-w-[280px] max-w-[220px] lg:max-w-[280px] bg-white border border-gray-200 rounded-[8px] overflow-hidden cursor-pointer"
+                >
+                  <img
+                    src={item.banner_image}
+                    alt={item.name || item.title}
+                    className="w-100 lg:w-[280px] object-cover h-[120px] lg:h-[140px] bg-white"
+                  />
+                  <div className="flex flex-col px-3 py-3 md:p-3 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <h4 className="font-futura text-[15px] md:text-[16px] font-medium">
+                        {item.name || item.title}
+                      </h4>
+                      <p className="font-work text-[12px] text-[#606972] uppercase truncate block">
+                        {item.business_type || item.type || item.category || item.cuisine_type || "-"}
+                      </p>
+                    </div>
+                    <RatingDisplay
+                      rating={item.average_rating}
+                      reviewCount={item.review_count}
+                    />
+                    <p className="text-[12px] font-work text-[#64748B] uppercase">
+                      {formatLocation(item)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+            {activeTab !== "all" && activeTabMeta?.buttonText && activeTabMeta?.buttonLink && (
+              <div className="w-full max-w-[1280px] px-4 md:px-6 mx-auto flex md:hidden">
+                <PrimaryButton
+                  text={activeTabMeta.buttonText}
+                  link={activeTabMeta.buttonLink}
+                />
+              </div>
+            )}
+        </section>
+
         <FeaturedSpotlightSection />
 
-        <TopRatedHorizontalSection
-          tabs={topRatedTabs}
-          data={{
-            dining,
-            events,
-            businesses,
-            hangouts,
+      <TopRatedHorizontalSection
+        tabs={topRatedTabs}
+        data={{
+          dining,
+          events,
+          businesses,
+          hangouts,
         }}
       />
 

@@ -6,6 +6,7 @@ const navItems = [
   { label: "Movies", path: "/movies" },
   { label: "Dining", path: "/dining" },
   { label: "Events", path: "/events" },
+  { label: "Businesses", path: "/businesses" },
   { label: "Hangouts", path: "/hangouts" },
 ];
 
@@ -18,7 +19,7 @@ export default function Navbar() {
             to={item.path}
             className={({ isActive }) =>
               `font-futura block w-full px-6 lg:px-3 py-2 rounded-[50px] cursor-pointer hover:bg-[#eeeaff] no-underline ${
-                isActive ? "bg-[#eeeaff] text-[#5A3EFF]" : ""
+                isActive ? "bg-[#EFF6FF] text-[#3B82F6]" : ""
               }`
             }
           >

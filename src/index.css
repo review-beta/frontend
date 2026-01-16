@@ -17,8 +17,19 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('/fonts/RobotoCondensed-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .font-futura {
   font-family: "FuturaMDBold";
+}
+
+.font-roboto {
+  font-family: "Roboto Condensed";
 }
 
 .font-newscycle {
