@@ -9,6 +9,9 @@ export default defineConfig({
     tailwindcss()
   ],
   server: {
+    allowedHosts: [
+      "nearly-that-california-miscellaneous.trycloudflare.com",
+    ],
     host: '0.0.0.0',
     port: 5173,
   }

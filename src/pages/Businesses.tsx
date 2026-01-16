@@ -64,7 +64,7 @@ interface Hangout {
   state: any;
 }
 
-const Dining = () => {
+const Businesses = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [dining, setDining] = useState<Dining[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
@@ -413,4 +413,4 @@ const Dining = () => {
   );
 };
 
-export default Dining;
+export default Businesses;
