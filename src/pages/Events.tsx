@@ -231,9 +231,7 @@ const Events = () => {
                       </h4>
                       <div className="flex justify-between">
                         <p className="font-roboto text-[16px] text-[#606972] truncate max-w-[100px] md:max-w-[160px] block">
-                          {movie.genre
-                            .map((person: { name: string }) => person.name)
-                            .join(", ")}
+                          genre
                         </p>
                         <RatingDisplay
                           rating={movie.average_rating}

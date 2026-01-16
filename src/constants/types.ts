@@ -10,6 +10,11 @@ export interface State {
   name: string;
 }
 
+interface MovieType {
+  id: number;
+  slug: string;
+}
+
 // Reviews
 export interface RandomReview {
   comment: string;
@@ -37,7 +42,7 @@ export interface Movie extends BaseRatedItem {
   release_date: string;
   trailer_url: string;
   genre: { name: string }[];
-  movie_type?: string; 
+  movie_type?: MovieType; 
   age_rating?: string; 
 }
 

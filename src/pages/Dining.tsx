@@ -231,9 +231,10 @@ const Dining = () => {
                       </h4>
                       <div className="flex justify-between">
                         <p className="font-roboto text-[16px] text-[#606972] truncate max-w-[100px] md:max-w-[160px] block">
-                          {movie.genre
+                          {/* {movie.genre
                             .map((person: { name: string }) => person.name)
-                            .join(", ")}
+                            .join(", ")} */}
+                            Genre
                         </p>
                         <RatingDisplay
                           rating={movie.average_rating}

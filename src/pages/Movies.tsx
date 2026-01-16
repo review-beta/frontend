@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import CustomDropdown from "../components/CustomDropdown";
-// import AdBanner from "../components/AdBanner";
 import Footer from "../components/Footer";
 import API from "../utils/api";
 import RatingDisplay from "../components/RatingDisplay";
 import Header from "../components/Header";
-import type { Movie, State, City, Tab } from "../constants/types";
+import type { Movie, Tab } from "../constants/types";
 import MovieListSkeleton from "../components/skeletons/MovieListSkeleton";
-// import PrimaryButton from "../components/PrimaryButton";
-// import Hero from "../components/Hero";
-// import HeroBanner from "../components/HeroBanner";
 import MobileAppCTA from "../components/MobileAppCTA";
 
 
@@ -17,9 +13,7 @@ const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [movieTabs, setMovieTabs] = useState<Tab[]>([]);
   const [activeMovieTab, setActiveMovieTab] = useState<string | number>("top");
-  const [loading, setLoading] = useState(false);
-  const [cities, setCities] = useState<Record<number, City>>({});
-  const [states, setStates] = useState<Record<number, string>>({});
+  const [loading, setLoading] = useState(false);;
   const [sortOption, setSortOption] = useState<string>("default");
   const [filterMovietype, setFilterMovietype] = useState<string | null>(null);
   const [filterGenre, setFilterGenre] = useState<string | null>(null);
@@ -57,53 +51,6 @@ const sortedMovies = sortOption === "default"
         default: return 0;
       }
     });
-
-  useEffect(() => {
-    const fetchStates = async () => {
-      try {
-        const res = await API.get("/states/");
-        const map: Record<number, string> = {};
-        (res.data || []).forEach((state: State) => {
-          map[state.id] = state.name;
-        });
-        setStates(map);
-      } catch (err) {
-        console.error("Failed to fetch states", err);
-      }
-    };
-
-    fetchStates();
-  }, []);
-
-  useEffect(() => {
-    const fetchCities = async () => {
-      try {
-        const res = await API.get("/cities/");
-        const map: Record<number, City> = {};
-        (res.data || []).forEach((city: City) => {
-          map[city.id] = city;
-        });
-        setCities(map);
-      } catch (err) {
-        console.error("Failed to fetch cities", err);
-      }
-    };
-
-    fetchCities();
-  }, []);
-
-  // useEffect(() => {
-  //   const fetchMovies = async () => {
-  //     try {
-  //       const res = await API.get("/movies/");
-  //       setMovies(Array.isArray(res.data) ? res.data : []);
-  //     } catch (err) {
-  //       console.error("Failed to fetch movies", err);
-  //     }
-  //   };
-
-  //   fetchMovies();
-  // }, []);
 
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
   const genres = Array.from(new Set(movies.flatMap(m => m.genre.map(g => g.name))));
@@ -153,8 +100,6 @@ const sortedMovies = sortOption === "default"
           }
         }
 
-        // const res = await API.get(url);
-
         const [res] = await Promise.all([
           API.get(url),
           delay(3000) // ensure skeleton shows at least 3 seconds
@@ -172,30 +117,6 @@ const sortedMovies = sortOption === "default"
       fetchMoviesByTab();
     }
   }, [activeMovieTab, movieTabs]);
-
-  // Handle tab change
-  const handleMovieTabChange = (tab: Tab) => {
-    setActiveMovieTab(tab.id);
-  };
-
-
-  const formatLocation = (item: any) => {
-    // Case 1: already a string (events)
-    if (typeof item.city === "string") {
-      return item.city;
-    }
-
-    // Case 2: city is an ID
-    if (typeof item.city === "number") {
-      const city = cities[item.city];
-      if (!city) return "-";
-
-      const stateName = states[city.state];
-      return `${city.name}${stateName ? `, ${stateName}` : ""}`;
-    }
-
-    return "-";
-  };
 
   return (
     <div className="min-h-screen text-black bg-[#ffffff]">

@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../assets/reviewbeta-logo.svg";
-import { FaLocationDot } from "react-icons/fa6";
+// import { FaLocationDot } from "react-icons/fa6";
 import Navbar from "./Navbar";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
