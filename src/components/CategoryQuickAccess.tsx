@@ -24,7 +24,7 @@ const CategoryCard = ({ item }: Props) => {
         className="w-8 h-8 md:w-10 md:h-10 object-contain"
       />
 
-      <span className="text-[12px] md:text-sm font-futura text-[#101828] capitalize">
+      <span className="text-[13px] md:text-sm font-work font-medium text-[#101828] capitalize">
         {item.label}
       </span>
     </Link>

@@ -68,7 +68,7 @@ export default function HeroBanner() {
   if (!slides.length) return null;
 
   return (
-    <div className="relative w-full h-[320px] md:h-[640px] overflow-hidden">
+    <div className="relative w-full h-[320px] lg:h-[640px] overflow-hidden">
       {slides.map((slide, index) => {
         const isActive = index === current;
         return (

@@ -1,138 +1,97 @@
-import React from "react";
-import Logo from "../assets/reviewbeta-logo.svg";
-// import { FaLocationDot } from "react-icons/fa6";
-import Navbar from "./Navbar";
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
-
 import { useState } from "react";
-import UserDropdown from "./UserDropdown";
-import { CgMenuRight } from "react-icons/cg";
-import { IoMdCloseCircle } from "react-icons/io";
+import { NavLink, useNavigate } from "react-router-dom";
+import { CgMenuLeft } from "react-icons/cg";
 
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `block font-futura w-full px-6 py-2 lg:px-3 rounded-[50px] cursor-pointer text-gray-700 w-full hover:bg-[#eeeaff] no-underline ${
-    isActive ? "bg-[#eeeaff] text-[#5A3EFF]" : ""
-  }`;
+import Logo from "../assets/reviewbeta-logo.svg";
+import { navLinks } from "../config/nav";
+import { useHideOnScroll } from "../hooks/useHideOnScroll";
+import MobileDrawer from "./MobileDrawer";
+import MoreMenu from "./MoreMenu";
 
-const Header: React.FC = () => {
-  const [isSideNavOpen, setIsSideNavOpen] = useState(false);
-
+export default function Header() {
   const navigate = useNavigate();
-  const { isAuthenticated, logout } = useAuth();
+  const isHidden = useHideOnScroll();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  const primaryLinks = navLinks.slice(0, 5);
+  const moreLinks = navLinks.slice(5);
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200 px-3 py-2">
-      <nav className="navbar max-w-[100%] mx-auto px-4 sm:px-6 lg:px-8 h-auto py-2 flex flex-wrap items-center justify-center md:justify-between">
-        {/* Left side: Logo + Location */}
-        <div className="flex items-center space-x-4">
-          <NavLink to='/'>
-            <img src={Logo} alt="Reviewbeta Logo" className="w-[120px]" />
-          </NavLink>
-
-          <div className="w-px h-6 bg-[#E4E4E4] sm:block" />
-
-          {/* <div className="gap-1 pr-4 py-2 items-center sm:flex flex">
-            <FaLocationDot className="text-2xl text-gray-600 cursor-pointer hover:text-red-500 h-5" />
-            <span className="text-gray-700 font-medium">Nigeria</span>
-          </div> */}
-
-          {/* Right side: Hamburger icon for mobile */}
-          <div className="flex items-center md:hidden">
-            <button
-              onClick={() => setIsSideNavOpen(true)}
-              className="text-2xl text-gray-700"
-            >
-              <CgMenuRight />
+    <>
+      <header
+        className={`sticky top-0 z-40 bg-white border-b transition-transform duration-300 ${
+          isHidden ? "-translate-y-full" : "translate-y-0"
+        }`}
+      >
+        {/* TOP ROW */}
+        <div className="max-w-[1280px] mx-auto px-4 py-3 flex items-center justify-between">
+          {/* Mobile Left */}
+          <div className="flex items-center gap-3 md:hidden">
+            <button onClick={() => setIsDrawerOpen(true)}>
+              <CgMenuLeft className="text-2xl" />
             </button>
+            <img src={Logo} alt="Logo" className="w-[110px]" />
           </div>
 
-          {/* Desktop-only section: navbar + search + login */}
-          <div className="nav-links hidden md:flex items-center gap-4">
-            <Navbar />
+          {/* Desktop Left */}
+          <div className="hidden md:flex items-center gap-3 lg:gap-4">
+            <img src={Logo} alt="Logo" className="w-[120px]" />
+
+            <div className="w-px h-6 bg-[#E4E4E4] sm:block" />
+
+            <nav className="flex items-center gap-2 text-sm">
+              {primaryLinks.map(link => (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `font-futura block whitespace-nowrap px-3 py-2 rounded-full cursor-pointer hover:bg-[#eeeaff] ${
+                      isActive ? "bg-[#EFF6FF] text-[#3B82F6]" : "text-gray-700"
+                    }`
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+
+              {moreLinks.length > 0 && <MoreMenu links={moreLinks} />}
+            </nav>
           </div>
-        </div>
 
-        <div className="right-nav hidden md:flex items-center gap-4">
-          <input
-            type="text"
-            placeholder="Search for deals, movies, events, restaurants"
-            className="font-work w-[320px] px-3 py-3 text-sm border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#eeeaff]"
-          />
-
-          <UserDropdown />
-        </div>
-      </nav>
-
-      {/* Side Nav Overlay */}
-      {isSideNavOpen && (
-        <div className={`fixed inset-0 z-50 bg-black/60 shadow-md transform transition-transform duration-300 ${
-          isSideNavOpen ? "translate-x-0" : "-translate-x-full"}`} onClick={() => setIsSideNavOpen(false)}>
-          <div
-            className="w-72 bg-white h-full shadow-lg p-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex gap-2 items-center my-2 justify-start" onClick={() => setIsSideNavOpen(false)}>
-              <img src={Logo} alt="District Logo" className="w-[120px]" />
-            </div>
-
+          {/* Right */}
+          <div className="flex items-center gap-3">
             <input
               type="text"
               placeholder="Search for deals, movies, events, restaurants"
-              className="font-work w-full my-4 px-3 py-3 text-sm border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#eeeaff]"
+              className="hidden lg:block font-work min-w-[240px] px-4 py-3 text-sm border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#eeeaff]"
             />
 
-            <Navbar />
-
-            <ul className="space-y-4 mt-4 text-sm">
-              {isAuthenticated ? (
-                <>
-                  <li>
-                    <NavLink to="/profile" className={navLinkClass}>
-                      Profile
-                    </NavLink>
-                  </li>
-                  <li>
-                    <button onClick={handleLogout}
-                      className="font-futura px-6 lg:px-2 py-2 rounded-[50px] cursor-pointer hover:bg-[#eeeaff] text-left text-gray-700 w-full"
-                    >
-                      Logout
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <NavLink to="/login" className={navLinkClass}>
-                      Login
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/register" className={navLinkClass}>
-                      Register
-                    </NavLink>
-                  </li>
-                </>
-              )}
-            </ul>
-
-            <div className="flex gap-2 items-center my-6 justify-center hover:text-red-500" onClick={() => setIsSideNavOpen(false)}>
-              <IoMdCloseCircle className="text-gray-500 text-2xl" />
-              <button className="font-work font-medium text-gray-500 uppercase"
-              >
-                Close
-              </button>
-            </div>
+            <button
+              onClick={() => navigate("/add-review")}
+              className="bg-[#3B82F6] font-work text-sm md:text-md text-white px-4 py-2 rounded-[6px] font-medium hover:bg-blue-600 transition cursor-pointer"
+            >
+              Add Review
+            </button>
           </div>
         </div>
-      )}
-    </header>
-  );
-};
 
-export default Header;
+        {/* MOBILE SEARCH */}
+        <div className="lg:hidden px-4 pb-3">
+          <input
+            type="text"
+            placeholder="Search for deals, movies, events, restaurants"
+            className="w-full font-work px-4 py-3 text-sm border rounded-xl border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#eeeaff]"
+          />
+          
+        </div>
+      </header>
+
+      {/* DRAWER OUTSIDE HEADER */}
+      <MobileDrawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+    </>
+  );
+}
+
