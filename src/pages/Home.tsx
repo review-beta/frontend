@@ -212,10 +212,7 @@ const Home = () => {
 
       <HeroBanner />
 
-      <CategoryQuickAccessSection />
-
-      {/* Hero Section */}
-      <section className="px-6 md:px-12 py-6 md:py-10 text-center">
+      <section className="px-6 md:px-12 py-6 md:pt-10 md:pb-6 text-center">
         <h2 className="font-futura text-2xl md:text-4xl font-bold mb-4 text-center leading-[30px]">
           <span className="inline-wrap">
             Discover the best of the best in{" "}
@@ -236,6 +233,8 @@ const Home = () => {
         </div> */}
 
       </section>
+
+      <CategoryQuickAccessSection />
 
       {/* Trending Experiences */}
       <div className="flex flex-col justify-start gap-6 md:gap-6 mx-auto mb-6">
