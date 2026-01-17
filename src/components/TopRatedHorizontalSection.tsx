@@ -137,22 +137,40 @@ const formatLocation = (item: any) => {
                 alt={item.name || item.title}
                 className="w-100 lg:w-[280px] object-cover h-[120px] lg:h-[140px] bg-white"
                 />
-                <div className="flex flex-col px-3 py-3 md:p-3 gap-3">
-                <div className="flex flex-col gap-1">
-                    <h4 className="font-futura text-[15px] md:text-[16px] font-medium">
-                    {item.name || item.title}
-                    </h4>
-                    <p className="font-work text-[12px] text-[#606972] uppercase truncate block">
-                    {item.business_type || item.type || item.category || item.cuisine_type || "-"}
+                <div className="flex flex-col px-3 py-3 md:p-3 gap-2">
+                    <div className="flex flex-col gap-1">
+                        <h4 className="font-futura text-[15px] md:text-[16px] font-medium truncate">
+                        {item.name || item.title}
+                        </h4>
+                        <p className="font-work text-[12px] text-[#606972] uppercase truncate block">
+                        {item.business_type || item.type || item.category || item.cuisine_type || "-"}
+                        </p>
+                    </div>
+                    <RatingDisplay
+                        rating={item.average_rating}
+                        reviewCount={item.review_count}
+                    />
+                    <p className="flex items-center gap-1 text-[12px] font-work text-[#64748B] uppercase truncate">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-3 h-3"
+                        >
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+
+                        <span>
+                            {formatLocation(item)}
+                        </span>
                     </p>
-                </div>
-                <RatingDisplay
-                    rating={item.average_rating}
-                    reviewCount={item.review_count}
-                />
-                <p className="text-[12px] font-work text-[#64748B] uppercase">
-                    {formatLocation(item)}
-                </p>
                 </div>
             </div>
             ))}

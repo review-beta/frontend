@@ -9,7 +9,7 @@ interface RatingDisplayProps {
 const RatingDisplay: React.FC<RatingDisplayProps> = ({ rating, reviewCount }) => {
   return (
     <div className="flex items-center mt-0">
-      <FaStar className="text-[#ffc400] w-4 h-4 mr-1" />
+      <FaStar className="text-[#ffc400] w-3 h-3 mr-1" />
       <span className="font-work text-[14px] text-[#3B82F6] font-semibold">
         {rating.toFixed(1)}{" "}
         {reviewCount !== undefined && (

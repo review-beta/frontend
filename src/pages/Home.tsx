@@ -16,6 +16,7 @@ import TopReviewers from "../components/TopReviewers";
 import TopRatedHorizontalSection from "../components/TopRatedHorizontalSection";
 import FeaturedSpotlightSection from "../components/FeaturedSpotlightSection";
 import type { Movie, Dining, Event, Business, Hangout, } from "../constants/types";
+import CategoryQuickAccessSection from "../components/CategoryQuickAccessSection";
 
 
 const topRatedTabs: (Tab & {
@@ -211,6 +212,8 @@ const Home = () => {
 
       <HeroBanner />
 
+      <CategoryQuickAccessSection />
+
       {/* Hero Section */}
       <section className="px-6 md:px-12 py-6 md:py-10 text-center">
         <h2 className="font-futura text-2xl md:text-4xl font-bold mb-4 text-center leading-[30px]">
@@ -256,17 +259,17 @@ const Home = () => {
               {loading ? (
                 <MovieListSkeleton count={5} />
               ) : (
-              <div className="w-full max-w-[1280px] px-4 md:px-6 mx-auto flex gap-2 md:gap-4 w-max snap-x snap-mandatory">
+              <div className="w-full max-w-[1280px] px-4 md:px-6 mx-auto flex gap-3 md:gap-4 snap-x snap-mandatory">
                 {movies.map((movie) => (
-                  <div key={movie.id} className="min-w-[220px] max-w-[140px] lg:max-w-[280px] bg-white border border-[#EBEBEB] rounded-[8px] overflow-hidden cursor-pointer p-1">
+                  <div key={movie.id} className="min-w-[220px] md:min-w-[280px] max-w-[140px] lg:max-w-[280px] bg-white border border-[#EBEBEB] rounded-[8px] overflow-hidden cursor-pointer p-1">
                     <img
                       src={movie.poster_thumbnail}
                       alt={movie.title}
                       className="w-100 lg:w-[272px] object-cover h-[280px] lg:h-[331px] bg-white rounded-t-[8px]"
                     />
-                      <div className="flex flex-col px-3 py-3 md:p-3 gap-3">
+                      <div className="flex flex-col px-2 py-3 md:p-3 gap-2">
                         <div className="flex flex-col gap-1">
-                          <h4 className="font-futura text-[15px] md:text-[16px] font-medium">
+                          <h4 className="font-futura text-[15px] md:text-[16px] font-medium truncate">
                             {movie.title}
                           </h4>
                           <p className="font-work text-[12px] text-[#606972] uppercase truncate block">
@@ -279,14 +282,31 @@ const Home = () => {
                           rating={movie.average_rating}
                           reviewCount={movie.review_count}
                         />
-                        <p className="text-[12px] font-work text-[#64748B] uppercase">
-                          {new Date(`${movie.release_date}T00:00:00`).toLocaleDateString("en-GB", {
+                        <p className="flex items-center gap-1 text-[12px] font-work text-[#64748B] uppercase">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="w-3 h-3"
+                          >
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                          </svg>
+
+                          <span>
+                            {new Date(`${movie.release_date}T00:00:00`).toLocaleDateString("en-GB", {
                               weekday: "short",
                               day: "2-digit",
-                              month: "long",
+                              month: "short",
                               year: "numeric",
-                            }
-                          )}
+                            })}
+                          </span>
                         </p>
                       </div>
                   </div>
