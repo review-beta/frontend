@@ -6,7 +6,9 @@ import type { State, City } from "../constants/types";
 import {
   getItemMeta,
   getItemCategory,
-  pickRandomFeatured
+  pickRandomFeatured,
+  hasLocation, 
+  hasReleaseDate,
 } from "../utils/contentHelpers";
 
 const featuredTabs = [
@@ -97,8 +99,8 @@ const FeaturedSpotlightSection = () => {
                 <h4 className="font-futura text-[18px] md:text-[28px] font-semibold">
                 {item.name || item.title}
                 </h4>
-                <p className="font-work text-[14px] md:text-[16px] text-[#606972] uppercase truncate block">
-                {getItemMeta(item, cities, states)}
+                <p className="font-work text-[14px] md:text-[14px] text-[#606972] uppercase truncate block">
+                {getItemCategory(item)}
                 </p>
             </div>
             <p className="font-work text-[#606972] text-[16px] md:text-[16px] max-w-xl line-clamp-3 md:line-clamp-4">
@@ -106,20 +108,20 @@ const FeaturedSpotlightSection = () => {
             </p>
             {item.random_review && (
                 <div className="border-l-4 border-blue-300 pl-4 max-w-xl">
-                <p className="italic text-[#475569] line-clamp-4 md:line-clamp-7">
+                <p className="font-work text-[#475569] line-clamp-4 md:line-clamp-7">
                     “{item.random_review.comment}”
                 </p>
 
                 {(item.random_review.author ||
                     item.random_review.rating) && (
-                    <div className="mt-1 flex items-center gap-2 text-sm text-[#64748B]">
+                    <div className="font-futura mt-1 flex items-center gap-2 text-sm text-[#64748B]">
                     {item.random_review.author && (
                         <span>— {item.random_review.author}</span>
                     )}
 
-                    {item.random_review.rating !== undefined && (
+                    {/* {item.random_review.rating !== undefined && (
                         <span>⭐ {item.random_review.rating}</span>
-                    )}
+                    )} */}
                     </div>
                 )}
                 </div>
@@ -128,8 +130,42 @@ const FeaturedSpotlightSection = () => {
                 rating={item.average_rating}
                 reviewCount={item.review_count}
             />
-                <p className="text-[14px] md:text-[16px] font-work text-[#64748B] uppercase">
-                {getItemCategory(item)}
+                <p className="flex items-center gap-2 text-[14px] md:text-[14px] font-work text-[#64748B] uppercase">
+                    {hasReleaseDate(item) && (
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-4 h-4"
+                        >
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                        <line x1="16" y1="2" x2="16" y2="6" />
+                        <line x1="8" y1="2" x2="8" y2="6" />
+                        <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                    )}
+
+                    {!hasReleaseDate(item) && hasLocation(item) && (
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="w-4 h-4"
+                        >
+                        <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                        </svg>
+                    )}
+
+                    <span>{getItemMeta(item, cities, states)}</span>
                 </p>
             </div>
         </div>

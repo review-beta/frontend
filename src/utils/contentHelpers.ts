@@ -81,3 +81,6 @@ export function getItemCategory(item: any): string {
     "-"
   );
 }
+
+export const hasReleaseDate = (item: any) => Boolean(item?.release_date);
+export const hasLocation = (item: any) => Boolean(item?.city || item?.state);
