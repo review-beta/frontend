@@ -1,6 +1,6 @@
 const MovieCardSkeleton = () => {
   return (
-    <div className="min-w-[220px] max-w-[140px] lg:max-w-[280px] bg-white border border-[#EBEBEB] rounded-[8px] overflow-hidden p-1 animate-pulse">
+    <div className="min-w-[220px] md:min-w-[280px] max-w-[140px] lg:max-w-[280px] bg-white border border-[#EBEBEB] rounded-[8px] overflow-hidden cursor-pointer p-1 animate-pulse">
       <div className="w-100 lg:w-[272px] h-[280px] lg:h-[331px] bg-gray-200 rounded-t-[8px]" />
       <div className="flex flex-col px-3 py-3 md:p-3 gap-3">
         <div className="flex flex-col gap-1">

@@ -19,7 +19,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 bg-white border-b transition-transform duration-300 ${
+        className={`sticky top-0 z-40 bg-white border-b border-b-[#ecedee] transition-transform duration-300 ${
           isHidden ? "-translate-y-full" : "translate-y-0"
         }`}
       >

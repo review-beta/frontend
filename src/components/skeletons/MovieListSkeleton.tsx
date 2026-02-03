@@ -2,7 +2,7 @@ import MovieCardSkeleton from "./MovieCardSkeleton";
 
 const MovieListSkeleton = ({ count = 1 }) => {
   return (
-    <div className="w-full max-w-[1280px] px-4 md:px-6 mx-auto flex gap-4">
+    <div className="w-full max-w-[1280px] px-4 md:px-6 mx-auto flex gap-3 md:gap-4 snap-x snap-mandatory">
       {Array.from({ length: count }).map((_, i) => (
         <MovieCardSkeleton key={i} />
       ))}
